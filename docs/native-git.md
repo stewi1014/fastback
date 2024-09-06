@@ -29,9 +29,6 @@ You can check the minecraft startup logs for lines that look like this
 You can also type `/backup info` into the chat to check.
 
 
-## Why is native git required now?
-
-
 ## Older Backups
 
 Backups created prior to version 0.17.1 in non-native mode enabled will continue to function with jgit (and in fact
