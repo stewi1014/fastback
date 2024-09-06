@@ -11,7 +11,6 @@ of disk space.
 
 ## Features
 
-* **Now with Forge support!**
 * Incrementally backup just the changed files
 * Faster, smaller backups than zipping
 * Back up locally
