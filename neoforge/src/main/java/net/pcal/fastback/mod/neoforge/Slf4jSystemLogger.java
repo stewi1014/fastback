@@ -39,6 +39,11 @@ class Slf4jSystemLogger implements SystemLogger {
     }
 
     @Override
+    public void warn(String message, Throwable t) {
+        this.slf4j.warn(message, t);
+    }
+
+    @Override
     public void info(String message) {
         this.slf4j.info(message);
     }

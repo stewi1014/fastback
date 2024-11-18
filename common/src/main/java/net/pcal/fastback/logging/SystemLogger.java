@@ -44,6 +44,8 @@ public interface SystemLogger {
 
     void warn(String message);
 
+    void warn(String message, Throwable t);
+
     void info(String message);
 
     void debug(String message);

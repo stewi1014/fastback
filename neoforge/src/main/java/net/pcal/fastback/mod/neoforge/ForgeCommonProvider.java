@@ -97,7 +97,6 @@ class ForgeCommonProvider implements MinecraftProvider {
         this.lifecycleListener = MinecraftProvider.register(this);
         syslog().debug("registered backup command");
         this.lifecycleListener.onInitialize();
-        SshHacks.ensureSshSessionFactoryIsAvailable();
         syslog().info("Fastback initialized");
         syslog().warn("------------------------------------------------------------------------------------");
         syslog().warn("Thanks for trying the new Forge version of Fastback.  For help, go to:");

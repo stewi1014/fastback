@@ -55,6 +55,11 @@ public class Log4jLogger implements SystemLogger {
     }
 
     @Override
+    public void warn(String message, Throwable t) {
+        this.log4j.warn(message, t);
+    }
+
+    @Override
     public void info(String message) {
         this.log4j.info(message);
     }

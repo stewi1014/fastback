@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
+import java.util.ServiceConfigurationError;
 
 import static java.nio.file.Files.createTempDirectory;
 import static java.util.Objects.requireNonNull;
@@ -162,10 +163,14 @@ class ModImpl implements LifecycleListener, Mod {
                 syslog().info("git-lfs is installed: " + gitLfsVersion);
             }
         }
-        if (SshSessionFactory.getInstance() == null) {
-            syslog().warn("An ssh provider was not initialized for jgit.  Operations on a remote repo over ssh will fail.");
-        } else {
-            syslog().info("SshSessionFactory: " + SshSessionFactory.getInstance().toString());
+        try {
+            if (SshSessionFactory.getInstance() == null) {
+                syslog().warn("An ssh provider was not initialized for jgit.  Operations on a remote repo over ssh will fail.");
+            } else {
+                syslog().info("SshSessionFactory: " + SshSessionFactory.getInstance().toString());
+            }
+        } catch (Exception | ServiceConfigurationError e) {
+            syslog().warn("An ssh provider was not initialized for jgit.  Operations on a remote repo over ssh will fail.", e);
         }
         syslog().debug("onInitialize complete");
     }
