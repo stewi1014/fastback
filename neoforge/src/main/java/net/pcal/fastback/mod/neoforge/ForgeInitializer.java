@@ -1,7 +1,7 @@
-package net.pcal.fastback.mod.forge;
+package net.pcal.fastback.mod.neoforge;
 
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -18,7 +18,7 @@ final public class ForgeInitializer {
                 new ForgeCommonProvider();
             } else if (FMLEnvironment.dist.isClient()) {
                 // Forge yells at us if we touch any client classes in a server.  So,
-                Class.forName("net.pcal.fastback.mod.forge.ForgeClientProvider").getConstructor().newInstance();
+                Class.forName("net.pcal.fastback.mod.neoforge.ForgeClientProvider").getConstructor().newInstance();
             } else {
                 throw new IllegalStateException("where am i?  server or client?");
             }

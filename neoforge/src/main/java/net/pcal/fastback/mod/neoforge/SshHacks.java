@@ -1,4 +1,4 @@
-package net.pcal.fastback.mod.forge;
+package net.pcal.fastback.mod.neoforge;
 
 import org.eclipse.jgit.transport.SshSessionFactory;
 

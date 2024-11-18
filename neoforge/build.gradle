@@ -6,7 +6,7 @@ plugins {
 
 architectury {
     platformSetupLoomIde()
-    forge()
+    neoForge()
 }
 
 shadowJar {
@@ -20,20 +20,20 @@ configurations {
     shadowCommon
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+    developmentNeoForge.extendsFrom common
 }
 
 archivesBaseName = "${project.archives_base_name}"
-version = "${project.mod_version}-forge"
+version = "${project.mod_version}-neoforge"
 group = project.maven_group
 
 dependencies {
-    forge("net.minecraftforge:forge:${project.forge_version}") { transitive false }
+    neoForge("net.neoforged:neoforge:${project.neo_version}") { transitive false }
 
     // note to self: implementation, NOT include.  include does implicit jarjar
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 
     // FIXME? I still don't understand if I need to declare all of these things as forgeRuntimeLibrary.  It sort
     // of seems like I do.
@@ -108,7 +108,7 @@ modrinth {
     uploadFile = remapJar
     changelog = "<p><a href='https://github.com/pcal43/fastback/releases/tag/${project.mod_version}'>https://github.com/pcal43/fastback/releases/tag/${project.mod_version}</a></p>"
     gameVersions = ["${project.minecraft_version}"]
-    loaders = ["forge"]
+    loaders = ["neoforge"]
     dependencies {}
 }
 
@@ -124,7 +124,7 @@ curseforge {
         changelogType = "markdown"
         mod_version = "${project.version}"
         addGameVersion((String) project.minecraft_version)
-        addGameVersion "Forge"
+        addGameVersion "NeoForge"
         mainArtifact(remapJar)
         afterEvaluate {
             uploadTask.dependsOn("remapJar")
