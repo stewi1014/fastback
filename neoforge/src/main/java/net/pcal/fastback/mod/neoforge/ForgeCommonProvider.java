@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.LevelResource;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.bus.api.IEventBus;
@@ -35,7 +36,7 @@ import static net.pcal.fastback.mod.MinecraftProvider.messageToText;
  * @author pcal
  * @since 0.16.0
  */
-class ForgeCommonProvider implements MinecraftProvider {
+class ForgeCommonProvider implements MinecraftProvider, MixinGateway {
 
     static final String MOD_ID = "fastback";
     private MinecraftServer logicalServer;
@@ -76,15 +77,6 @@ class ForgeCommonProvider implements MinecraftProvider {
         commandDispatcher.register(backupCommand);
     }
 
-    /**
-     TODO This one isn't it.  We need to hear about it when an autosaves (and only autosaves) are completed.
-     Might have to delve into Forge mixins to do this.
-     private void onLevelSaveEvent(LevelEvent.Save event) {
-     provider.onAutoSaveComplete();
-     }
-     **/
-
-
     // ======================================================================
     // Protected
 
@@ -105,6 +97,7 @@ class ForgeCommonProvider implements MinecraftProvider {
         syslog().warn("Please note that this is an alpha release.  A list of known issues is available here:");
         syslog().warn("https://github.com/pcal43/fastback/issues?q=is%3Aissue+is%3Aopen+label%3Aforge");
         syslog().warn("------------------------------------------------------------------------------------");
+        MixinGateway.Singleton.register(this);
     }
 
 
@@ -136,23 +129,30 @@ class ForgeCommonProvider implements MinecraftProvider {
         return "0.15.3+1.20.1-alpha"; //FIXME
     }
 
-    //FIXME!!
-    void onAutoSaveComplete() {
-        syslog().debug("onAutoSaveComplete");
+    @Override
+    public void autoSaveCompleted() {
+        syslog().debug("autoSaveCompleted");
         this.autoSaveListener.run();
     }
 
     @Override
     public Path getWorldDirectory() {
-        if (this.logicalServer == null) throw new IllegalStateException("minecraftServer is null");
+        if (logicalServer == null) throw new IllegalStateException("minecraftServer is null");
         return logicalServer.getWorldPath(LevelResource.ROOT).toAbsolutePath().normalize();
     }
 
     @Override
     public void setWorldSaveEnabled(boolean enabled) {
+        isWorldSaveEnabled = enabled;
+        if (logicalServer == null) throw new IllegalStateException("minecraftServer is null");
         for (ServerLevel world : logicalServer.getAllLevels()) {
             world.noSave = !enabled;
         }
+    }
+
+    @Override
+    public boolean isWorldSaveEnabled() {
+        return isWorldSaveEnabled;
     }
 
     @Override
@@ -216,5 +216,4 @@ class ForgeCommonProvider implements MinecraftProvider {
          **/
         return out;
     }
-
 }

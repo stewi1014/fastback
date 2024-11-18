@@ -27,3 +27,6 @@ mandatory = true
 versionRange = "1.21.3"
 ordering = "NONE"
 side = "CLIENT"
+
+[[mixins]]
+config="fastback.mixins.json"
