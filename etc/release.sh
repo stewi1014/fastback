@@ -50,10 +50,7 @@ fi
 #
 
 FABRIC_LIBS_DIR='fabric/build/libs'
-
-# NOTE: Forge is no longer supported and the build has been disabled
-# See: https://github.com/pcal43/fastback/issues/333
-# FORGE_LIBS_DIR='forge/build/libs'
+FORGE_LIBS_DIR='forge/build/libs'
 
 CURRENT_VERSION=$(sed -rn 's/^mod_version.*=[ ]*([^\n]+)$/\1/p' gradle.properties)
 echo "Current version is '$CURRENT_VERSION'"
@@ -69,10 +66,7 @@ rm gradle.properties
 mv gradle.properties.temp gradle.properties
 
 rm -rf "${FABRIC_LIBS_DIR}"
-
-# NOTE: Forge is no longer supported and the build has been disabled
-# See: https://github.com/pcal43/fastback/issues/333
-# rm -rf "${FORGE_LIBS_DIR}"
+rm -rf "${FORGE_LIBS_DIR}"
 
 ./gradlew remapJar
 
