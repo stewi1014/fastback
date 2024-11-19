@@ -1,5 +1,6 @@
 package net.pcal.fastback.mod.neoforge;
 
+import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -38,9 +39,9 @@ final class ForgeClientProvider extends ForgeCommonProvider {
     private long hudTextTime;
     private final Minecraft client;
 
-    public ForgeClientProvider() {
-        final IEventBus modEventBus = ModLoadingContext.get().getActiveContainer().getEventBus();
-        modEventBus.addListener(this::onClientStartupEvent);
+    public ForgeClientProvider(ModContainer container) {
+        super(container);
+        container.getEventBus().addListener(this::onClientStartupEvent);
         NeoForge.EVENT_BUS.addListener(this::onGuiOverlayEvent);
         NeoForge.EVENT_BUS.addListener(this::onScreenRenderEvent);
         this.client = requireNonNull(Minecraft.getInstance(), "MinecraftClient.getInstance() returned null");
@@ -53,7 +54,7 @@ final class ForgeClientProvider extends ForgeCommonProvider {
         this.onInitialize();
     }
 
-    private void onGuiOverlayEvent(CustomizeGuiOverlayEvent event) {
+    private void onGuiOverlayEvent(CustomizeGuiOverlayEvent.Chat event) {
         this.renderOverlayText(event.getGuiGraphics());
     }
 

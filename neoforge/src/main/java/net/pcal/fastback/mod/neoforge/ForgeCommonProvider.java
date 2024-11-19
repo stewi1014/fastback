@@ -7,9 +7,10 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.bus.api.IEventBus;
@@ -40,13 +41,15 @@ class ForgeCommonProvider implements MinecraftProvider, MixinGateway {
 
     static final String MOD_ID = "fastback";
     private MinecraftServer logicalServer;
+    private ModContainer container;
     private LifecycleListener lifecycleListener = null;
     private Runnable autoSaveListener;
     private boolean isWorldSaveEnabled = true;
 
-    ForgeCommonProvider() {
-        final IEventBus modEventBus = ModLoadingContext.get().getActiveContainer().getEventBus();
-        modEventBus.addListener(this::onDedicatedServerStartupEvent);
+    ForgeCommonProvider(ModContainer container) {
+        this.container = container;
+
+        container.getEventBus().addListener(this::onDedicatedServerStartupEvent);
         NeoForge.EVENT_BUS.addListener(this::onServerStartupEvent);
         NeoForge.EVENT_BUS.addListener(this::onServerStoppingEvent);
         NeoForge.EVENT_BUS.addListener(this::onRegisterCommandEvent);
@@ -89,9 +92,9 @@ class ForgeCommonProvider implements MinecraftProvider, MixinGateway {
         this.lifecycleListener = MinecraftProvider.register(this);
         syslog().debug("registered backup command");
         this.lifecycleListener.onInitialize();
-        syslog().info("Fastback initialized");
+        syslog().info("Fastback " + getModVersion() + " initialized");
         syslog().warn("------------------------------------------------------------------------------------");
-        syslog().warn("Thanks for trying the new Forge version of Fastback.  For help, go to:");
+        syslog().warn("Thanks for trying the new NeoForge version of Fastback.  For help, go to:");
         syslog().warn("https://pcal43.github.io/fastback/");
         syslog().warn("Please note that this is an alpha release.  A list of known issues is available here:");
         syslog().warn("https://github.com/pcal43/fastback/issues?q=is%3Aissue+is%3Aopen+label%3Aforge");
@@ -125,7 +128,7 @@ class ForgeCommonProvider implements MinecraftProvider, MixinGateway {
 
     @Override
     public String getModVersion() {
-        return "0.15.3+1.20.1-alpha"; //FIXME
+        return container.getModInfo().getVersion().toString();
     }
 
     @Override
@@ -205,14 +208,10 @@ class ForgeCommonProvider implements MinecraftProvider, MixinGateway {
     @Override
     public Collection<Path> getModsBackupPaths() {
         final List<Path> out = new ArrayList<>();
-        /**
-         final FabricLoader fl = FabricLoader.getInstance();
-         final Path gameDir = fl.getGameDir();
-         out.add(gameDir.resolve("options.txt´"));
-         out.add(gameDir.resolve("mods"));
-         out.add(gameDir.resolve("config"));
-         out.add(gameDir.resolve("resourcepacks"));
-         **/
+        out.add(FMLPaths.GAMEDIR.get().resolve("options.txt"));
+        out.add(FMLPaths.MODSDIR.get());
+        out.add(FMLPaths.CONFIGDIR.get());
+        out.add(FMLPaths.GAMEDIR.get().resolve("resourcepacks"));
         return out;
     }
 }
