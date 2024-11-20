@@ -11,6 +11,7 @@ of disk space.
 
 ## Features
 
+* **Now with NeoForge support!**
 * Incrementally backup just the changed files
 * Faster, smaller backups than zipping
 * Back up locally
@@ -31,7 +32,6 @@ of disk space.
 * Support for restoring remote snapshots
 * Better management of remote snapshots
 * UI for managing backups from the title screen
-* ~~Forge support (maybe)~~
 
 ## Acknowledgements
 

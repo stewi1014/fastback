@@ -1,4 +1,4 @@
-package net.pcal.fastback.mod.forge;
+package net.pcal.fastback.mod.neoforge;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -6,14 +6,14 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.storage.LevelStorageSource;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.event.server.ServerStoppingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.neoforged.fml.ModLoadingContext;
 import net.pcal.fastback.logging.SystemLogger;
 import net.pcal.fastback.logging.UserMessage;
 import net.pcal.fastback.mod.LifecycleListener;
@@ -44,11 +44,11 @@ class ForgeCommonProvider implements MinecraftProvider {
     private boolean isWorldSaveEnabled;
 
     ForgeCommonProvider() {
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus modEventBus = ModLoadingContext.get().getActiveContainer().getEventBus();
         modEventBus.addListener(this::onDedicatedServerStartupEvent);
-        MinecraftForge.EVENT_BUS.addListener(this::onServerStartupEvent);
-        MinecraftForge.EVENT_BUS.addListener(this::onServerStoppingEvent);
-        MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommandEvent);
+        NeoForge.EVENT_BUS.addListener(this::onServerStartupEvent);
+        NeoForge.EVENT_BUS.addListener(this::onServerStoppingEvent);
+        NeoForge.EVENT_BUS.addListener(this::onRegisterCommandEvent);
     }
 
 
@@ -145,9 +145,7 @@ class ForgeCommonProvider implements MinecraftProvider {
     @Override
     public Path getWorldDirectory() {
         if (this.logicalServer == null) throw new IllegalStateException("minecraftServer is null");
-        final LevelStorageSource.LevelStorageAccess session = logicalServer.storageSource;
-        Path out = session.getWorldDir().toAbsolutePath().normalize();
-        return out;
+        return logicalServer.getWorldPath(LevelResource.ROOT).toAbsolutePath().normalize();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package net.pcal.fastback.mod.forge;
+package net.pcal.fastback.mod.neoforge;
 
 import net.pcal.fastback.logging.SystemLogger;
 import org.slf4j.Logger;

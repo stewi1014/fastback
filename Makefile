@@ -2,13 +2,14 @@
 
 .PHONY: clean
 clean:
-	rm -rf build common/build fabric/build forge/build
+	rm -rf build common/build fabric/build neoforge/build #forge/build
 
 
 .PHONY: jar
 jar:
 	./gradlew remapJar
 	ls -1 fabric/build/libs
+	ls -1 neoforge/build/libs
 #	ls -1 forge/build/libs
 
 test:
@@ -39,14 +40,18 @@ deps:
 .PHONY: inst
 inst:
 #	rm -f ~/minecraft/instances/1.20.1-forge-dev/.minecraft/mods/fastback*
+	rm -f ~/minecraft/instances/1.20.1-neoforge-dev/.minecraft/mods/fastback*
 	rm -f ~/minecraft/instances/1.20.1-fabric-dev/.minecraft/mods/fasback*
 	cp fabric/build/libs/fastback*-fabric.jar ~/minecraft/instances/1.20.1-fabric-dev/.minecraft/mods/
+	cp neoforge/build/libs/fastback*-neoforge.jar ~/minecraft/instances/1.20.1-neoforge-dev/.minecraft/mods/
 #	cp forge/build/libs/fastback*-forge.jar ~/minecraft/instances/1.20.1-forge-dev/.minecraft/mods/
 
 .PHONY: tvf
 tvf:
+	jar -tvf neoforge/build/libs/fastback*-neoforge.jar
 #	jar -tvf forge/build/libs/fastback*-forge.jar
 
 .PHONY: tvfs
 tvfs:
+	jar -tvf neoforge/build/libs/fastback*-shadow.jar
 #	jar -tvf forge/build/libs/fastback*-shadow.jar

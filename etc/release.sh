@@ -50,6 +50,7 @@ fi
 #
 
 FABRIC_LIBS_DIR='fabric/build/libs'
+NEOFORGE_LIBS_DIR='neoforge/build/libs'
 
 # NOTE: Forge is no longer supported and the build has been disabled
 # See: https://github.com/pcal43/fastback/issues/333
@@ -69,6 +70,7 @@ rm gradle.properties
 mv gradle.properties.temp gradle.properties
 
 rm -rf "${FABRIC_LIBS_DIR}"
+rm -rf "${NEOFORGE_LIBS_DIR}"
 
 # NOTE: Forge is no longer supported and the build has been disabled
 # See: https://github.com/pcal43/fastback/issues/333
@@ -84,7 +86,7 @@ git push
 # Do github release
 #
 set -x
-gh release create --generate-notes --title "${RELEASE_VERSION}" --notes "release ${RELEASE_VERSION}" ${RELEASE_VERSION}  "${FABRIC_LIBS_DIR}"/*   # "${FORGE_LIBS_DIR}"/*
+gh release create --generate-notes --title "${RELEASE_VERSION}" --notes "release ${RELEASE_VERSION}" ${RELEASE_VERSION} "${FABRIC_LIBS_DIR}"/* "${NEOFORGE_LIBS_DIR}"/* # "${FORGE_LIBS_DIR}"/*
 set +x
 
 

@@ -1,6 +1,7 @@
 
 architectury {
     common("fabric")
+    common("neoforge")
     // NOTE: Forge is no longer supported and the build has been disabled
     // See: https://github.com/pcal43/fastback/issues/333
     //common("forge")

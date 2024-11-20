@@ -1,11 +1,11 @@
-package net.pcal.fastback.mod.forge;
+package net.pcal.fastback.mod.neoforge;
 
-import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.ModLoadingContext;
 import net.pcal.fastback.logging.UserMessage;
 
 import static java.util.Objects.requireNonNull;
@@ -39,10 +39,10 @@ final class ForgeClientProvider extends ForgeCommonProvider {
     private final Minecraft client;
 
     public ForgeClientProvider() {
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus modEventBus = ModLoadingContext.get().getActiveContainer().getEventBus();
         modEventBus.addListener(this::onClientStartupEvent);
-        MinecraftForge.EVENT_BUS.addListener(this::onGuiOverlayEvent);
-        MinecraftForge.EVENT_BUS.addListener(this::onScreenRenderEvent);
+        NeoForge.EVENT_BUS.addListener(this::onGuiOverlayEvent);
+        NeoForge.EVENT_BUS.addListener(this::onScreenRenderEvent);
         this.client = requireNonNull(Minecraft.getInstance(), "MinecraftClient.getInstance() returned null");
     }
 
@@ -91,7 +91,8 @@ final class ForgeClientProvider extends ForgeCommonProvider {
         final Component text = messageToText(userMessage);
         this.hudText = text;
         final Screen screen = client.screen;
-        if (screen != null) screen.title = text;
+        // TODO; fix this
+        //if (screen != null) screen.title = text;
     }
 
     @Override
