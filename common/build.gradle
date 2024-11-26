@@ -1,45 +1,17 @@
-
-architectury {
-    common("fabric")
-    common("neoforge")
-    // NOTE: Forge is no longer supported and the build has been disabled
-    // See: https://github.com/pcal43/fastback/issues/333
-    //common("forge")
+plugins {
+    id "fabric-loom"
 }
 
 dependencies {
-    // "you can't include dependencies in common gradle projects"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
 
-    // JGit
-    compileOnly("org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}") { transitive = false }
+    testImplementation "org.junit.jupiter:junit-jupiter:5.7.1"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 
-    // JUnit
-    testImplementation ('junit:junit:4.13.1') { transitive = false } //KILL?
-    testImplementation ("org.junit.jupiter:junit-jupiter-api:${project.junit_jupiter_version}") { transitive = false }
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:${project.junit_jupiter_version}") { transitive = false }
-    testRuntimeOnly ("org.apache.logging.log4j:log4j-core:${project.test_log4j_version}") { transitive = false }
-    testCompileOnly ('org.apiguardian:apiguardian-api:1.0.0')
+    compileOnly("org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}")
 }
-
 
 test {
     useJUnitPlatform()
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    // localizations need to be under data for server-translations-api
-    // TODO move to fabric?
-    copy {
-        from "$projectDir/src/main/resources/assets/fastback/lang"
-        into "$buildDir/resources/main/data/fastback/lang"
-    }
-}
-sourceSets {
-    test {
-        java {
-            srcDirs = [ "common/src/test"]  // Note @Peter's comment below
-        }
-    }
 }

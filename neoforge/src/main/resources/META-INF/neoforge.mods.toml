@@ -4,29 +4,29 @@ issueTrackerURL = "https://github.com/pcal43/fastback"
 license = "GPL2"
 
 [[mods]]
-modId = "fastback"
-version = "0.19.2+1.21.3-prerelease"
-displayName = "Fast Backups"
-authors = "pcal"
-description = '''
-Fast, incremental world backups powered by Git.
-https://pcal43.github.io/fastback/
-'''
-logoFile = "fastback-icon.png"
+    modId = "fastback"
+    version = "0.19.2+1.21.3-prerelease"
+    displayName = "Fast Backups"
+    authors = "pcal"
+    description = '''
+    Fast, incremental world backups powered by Git.
+    https://pcal43.github.io/fastback/
+    '''
+    logoFile = "fastback-icon.png"
 
 [[dependencies.fastback]]
-modId = "neoforge"
-mandatory = true
-versionRange = "[21.3.29-beta,)"
-ordering = "NONE"
-side = "CLIENT"
+    modId = "neoforge"
+    mandatory = true
+    versionRange = "[21.3.29-beta,)"
+    ordering = "NONE"
+    side = "CLIENT"
 
 [[dependencies.fastback]]
-modId = "minecraft"
-mandatory = true
-versionRange = "1.21.3"
-ordering = "NONE"
-side = "CLIENT"
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "1.21.3"
+    ordering = "NONE"
+    side = "CLIENT"
 
 [[mixins]]
-config="fastback.mixins.json"
+    config="fastback.mixins.json"

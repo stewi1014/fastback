@@ -1,38 +1,21 @@
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
-}
-
-
-architectury {
-    minecraft = project.minecraft_version
+    id "fabric-loom" version "1.8-SNAPSHOT" apply false
+    id "net.neoforged.moddev" version "2.0.44-beta" apply false
+    id "org.spongepowered.gradle.vanilla" version "0.2.1-SNAPSHOT" apply false
+    id "com.gradleup.shadow" version "8.3.5" apply false
 }
 
 subprojects {
-    apply plugin: "java-library"
-
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-    compileJava.options.encoding = compileTestJava.options.encoding = javadoc.options.encoding = "UTF-8"
-
-    repositories {
-        mavenCentral()
-        maven { url 'https://maven.fabricmc.net/' }
-        maven { url 'https://maven.nucleoid.xyz' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://maven.neoforged.net/releases/' }
-    }
+    apply plugin: "java"
 
     java {
-        withSourcesJar()
+        toolchain.languageVersion = JavaLanguageVersion.of(21)
     }
-}
 
-configure(subprojects) {
-    apply plugin: "architectury-plugin"
-    apply plugin: "dev.architectury.loom"
-
-    dependencies {
-        minecraft "com.mojang:minecraft:${project.minecraft_version}"
-        mappings loom.officialMojangMappings()
+    repositories {
+        maven { url = "https://maven.fabricmc.net/" }
+        maven { url = "https://maven.neoforged.net/releases" }
+        maven { url = "https://maven.nucleoid.xyz" }
+        maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 }
